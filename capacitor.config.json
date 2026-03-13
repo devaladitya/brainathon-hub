@@ -1,0 +1,10 @@
+{
+  "appId": "com.brainathon.hub",
+  "appName": "Brainathon Hub",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false
+    }
+  }
+}
