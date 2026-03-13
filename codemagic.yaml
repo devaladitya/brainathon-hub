@@ -1,0 +1,25 @@
+workflows:
+  capacitor-android:
+    name: Build Android
+    max_build_duration: 60
+    environment:
+      node: latest
+    scripts:
+      - npm install
+      - npx cap sync android
+      - cd android
+      - ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/**/*.apk
+
+  capacitor-ios:
+    name: Build iOS
+    max_build_duration: 60
+    environment:
+      node: latest
+      xcode: latest
+    scripts:
+      - npm install
+      - npx cap sync ios
+    artifacts:
+      - ios/build/**/*.ipa
