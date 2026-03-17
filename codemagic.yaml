@@ -23,5 +23,8 @@ workflows:
       - npm install
       - npm run build
       - npx cap sync ios
+      - cd ios/App
+      - xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
     artifacts:
-      - ios/build/**/*.ipa
+      - ios/App/build/**/*.xcarchive
+      - ios/App/build/**/*.ipa
