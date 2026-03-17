@@ -2,6 +2,10 @@
   "appId": "com.brainathon.hub",
   "appName": "Brainathon Hub",
   "webDir": "dist",
+  "server": {
+    "url": "https://brainathon-hub--devalwork07.replit.app",
+    "cleartext": true
+  },
   "plugins": {
     "SplashScreen": {
       "launchAutoHide": false
