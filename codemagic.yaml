@@ -1,15 +1,16 @@
-capacitor-ios:
-  name: Build iOS
-  max_build_duration: 60
-  environment:
-    node: latest
-    xcode: latest
-  scripts:
-    - npm install
-    - npm run build
-    - npx cap sync ios
-    - cd ios/App
-    - xcodebuild -project App.xcodeproj -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
-  artifacts:
-    - ios/App/build/**/*.xcarchive
-    - ios/App/build/**/*.ipa
+workflows:
+  capacitor-ios:
+    name: Build iOS
+    max_build_duration: 60
+    environment:
+      node: latest
+      xcode: latest
+    scripts:
+      - npm install
+      - npm run build
+      - npx cap sync ios
+      - cd ios/App
+      - xcodebuild -project App.xcodeproj -scheme App -sdk iphoneos -configuration Release archive -archivePath build/App.xcarchive
+    artifacts:
+      - ios/App/build/**/*.xcarchive
+      - ios/App/build/**/*.ipa
