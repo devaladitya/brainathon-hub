@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace = "com.brainathon.hub"
+    namespace = "app.knobly.brainathonhub"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.brainathon.hub"
+        applicationId "app.knobly.brainathonhub"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

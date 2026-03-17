@@ -1,5 +1,5 @@
 {
-  "appId": "com.brainathon.hub",
+  "appId": "app.knobly.brainathonhub",
   "appName": "Brainathon Hub",
   "webDir": "dist",
   "server": {
