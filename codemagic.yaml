@@ -6,6 +6,13 @@ workflows:
     environment:
       node: 22
       xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: app.knobly.brainathonhub
+        provisioning_profiles:
+          - BrainathonHub_AppStore
+        certificates:
+          - BrainathonHub Distribution
       vars:
         XCODE_SCHEME: "App"
     scripts:
@@ -18,21 +25,19 @@ workflows:
       - name: Sync Capacitor iOS
         script: |
           npx cap sync ios
-      - name: Build iOS app (no signing)
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+      - name: Build iOS app
         script: |
           cd ios/App
-          xcodebuild \
-            -project App.xcodeproj \
-            -scheme "$XCODE_SCHEME" \
-            -sdk iphoneos \
-            -configuration Release \
-            CODE_SIGNING_ALLOWED=NO \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGN_IDENTITY="" \
-            build
+          xcode-project build-ipa \
+            --project App.xcodeproj \
+            --scheme "$XCODE_SCHEME"
     artifacts:
+      - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-      - ios/App/build/**/*
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
     publishing:
       email:
         recipients:
