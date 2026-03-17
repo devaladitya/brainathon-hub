@@ -7,8 +7,6 @@ workflows:
       node: 22
       xcode: latest
       ios_signing:
-        distribution_type: app_store
-        bundle_identifier: app.knobly.brainathonhub
         provisioning_profiles:
           - BrainathonHub_AppStore
         certificates:
