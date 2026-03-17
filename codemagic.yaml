@@ -22,7 +22,7 @@ workflows:
         script: |
           cd ios/App
           xcodebuild \
-            -workspace App.xcworkspace \
+            -project App.xcodeproj \
             -scheme "$XCODE_SCHEME" \
             -sdk iphoneos \
             -configuration Release \
