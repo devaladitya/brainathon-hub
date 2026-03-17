@@ -2,14 +2,42 @@ workflows:
   capacitor-ios:
     name: Build iOS
     max_build_duration: 60
+    instance_type: mac_mini_m2
     environment:
-      node: latest
+      node: 18
       xcode: latest
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.brainathon.hub
+      vars:
+        XCODE_WORKSPACE: "ios/App/App.xcworkspace"
+        XCODE_SCHEME: "App"
     scripts:
-      - npm install
-      - npm run build
-      - npx cap sync ios
-      - xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphoneos -configuration Release archive -archivePath ios/App/build/App.xcarchive
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build web assets
+        script: |
+          npm run build
+      - name: Sync Capacitor iOS
+        script: |
+          npx cap sync ios
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+      - name: Build iOS app
+        script: |
+          xcode-project build-ipa \
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
     artifacts:
-      - ios/App/build/**/*.xcarchive
-      - ios/App/build/**/*.ipa
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - devalwork07@gmail.com
+        notify:
+          success: true
+          failure: true

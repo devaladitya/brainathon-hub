@@ -1,6 +1,6 @@
 {
-  "name": "App",
-  "short_name": "App",
+  "name": "Brainathon Hub",
+  "short_name": "Brainathon Hub",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{

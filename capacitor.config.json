@@ -3,8 +3,8 @@
   "appName": "Brainathon Hub",
   "webDir": "dist",
   "server": {
-    "url": "https://brainathon-hub--devalwork07.replit.app",
-    "cleartext": true
+    "url": "https://brainathonhub.com/",
+    "cleartext": false
   },
   "plugins": {
     "SplashScreen": {

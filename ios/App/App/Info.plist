@@ -30,8 +30,17 @@
 	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Brainathon Hub needs access to your camera to take photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Brainathon Hub needs access to your photo library to select photos.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
