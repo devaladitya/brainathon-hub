@@ -9,7 +9,7 @@ workflows:
       - npm install
       - npm run build
       - npx cap sync ios
-      - xcodebuild -project ios/App/App/App.xcodeproj -scheme App -sdk iphoneos -configuration Release archive -archivePath ios/App/App/build/App.xcarchive
+      - xcodebuild -project ios/App/App.xcodeproj -scheme App -sdk iphoneos -configuration Release archive -archivePath ios/App/build/App.xcarchive
     artifacts:
-      - ios/App/App/build/**/*.xcarchive
-      - ios/App/App/build/**/*.ipa
+      - ios/App/build/**/*.xcarchive
+      - ios/App/build/**/*.ipa
