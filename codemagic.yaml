@@ -6,6 +6,7 @@ workflows:
       node: latest
     scripts:
       - npm install
+      - npm run build
       - npx cap sync android
       - cd android
       - ./gradlew assembleDebug
@@ -20,6 +21,7 @@ workflows:
       xcode: latest
     scripts:
       - npm install
+      - npm run build
       - npx cap sync ios
     artifacts:
       - ios/build/**/*.ipa
