@@ -23,9 +23,34 @@ workflows:
       - name: Sync Capacitor iOS
         script: |
           npx cap sync ios
-      - name: Generate app icons
+      - name: Force correct app icon
         script: |
-          npx @capacitor/assets generate --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#000000' --ios
+          # Resize source icon to 1024x1024 for iOS AppIcon
+          cp resources/icon.png /tmp/AppIcon-512@2x.png
+          sips -z 1024 1024 /tmp/AppIcon-512@2x.png
+          # Overwrite whatever cap sync put there
+          cp -f /tmp/AppIcon-512@2x.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
+          # Ensure Contents.json is correct
+          cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'ICONJSON'
+          {
+            "images": [
+              {
+                "idiom": "universal",
+                "size": "1024x1024",
+                "filename": "AppIcon-512@2x.png",
+                "platform": "ios"
+              }
+            ],
+            "info": {
+              "author": "xcode",
+              "version": 1
+            }
+          }
+          ICONJSON
+          echo "=== Icon verification ==="
+          ls -la ios/App/App/Assets.xcassets/AppIcon.appiconset/
+          md5 ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
+          md5 resources/icon.png
       - name: Set up code signing
         script: |
           xcode-project use-profiles
