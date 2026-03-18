@@ -23,34 +23,21 @@ workflows:
       - name: Sync Capacitor iOS
         script: |
           npx cap sync ios
-      - name: Force correct app icon
+      - name: Force correct app icon (no alpha)
         script: |
-          # Resize source icon to 1024x1024 for iOS AppIcon
-          cp resources/icon.png /tmp/AppIcon-512@2x.png
-          sips -z 1024 1024 /tmp/AppIcon-512@2x.png
-          # Overwrite whatever cap sync put there
-          cp -f /tmp/AppIcon-512@2x.png ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
-          # Ensure Contents.json is correct
-          cat > ios/App/App/Assets.xcassets/AppIcon.appiconset/Contents.json << 'ICONJSON'
-          {
-            "images": [
-              {
-                "idiom": "universal",
-                "size": "1024x1024",
-                "filename": "AppIcon-512@2x.png",
-                "platform": "ios"
-              }
-            ],
-            "info": {
-              "author": "xcode",
-              "version": 1
-            }
-          }
-          ICONJSON
+          ICON_DIR="ios/App/App/Assets.xcassets/AppIcon.appiconset"
+          # Resize to 1024x1024
+          cp resources/icon.png /tmp/icon_src.png
+          sips -z 1024 1024 /tmp/icon_src.png
+          # Convert to JPEG (removes alpha/transparency, white background)
+          sips -s format jpeg -s formatOptions 100 /tmp/icon_src.png --out /tmp/icon_noalpha.jpg
+          # Convert back to PNG (no alpha)
+          sips -s format png /tmp/icon_noalpha.jpg --out "$ICON_DIR/AppIcon-512@2x.png"
+          # Verify
           echo "=== Icon verification ==="
-          ls -la ios/App/App/Assets.xcassets/AppIcon.appiconset/
-          md5 ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png
-          md5 resources/icon.png
+          sips -g pixelWidth -g pixelHeight -g hasAlpha "$ICON_DIR/AppIcon-512@2x.png"
+          # Ensure Contents.json
+          printf '{"images":[{"idiom":"universal","size":"1024x1024","filename":"AppIcon-512@2x.png","platform":"ios"}],"info":{"author":"xcode","version":1}}' > "$ICON_DIR/Contents.json"
       - name: Set up code signing
         script: |
           xcode-project use-profiles
