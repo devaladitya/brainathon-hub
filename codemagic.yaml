@@ -23,6 +23,9 @@ workflows:
       - name: Sync Capacitor iOS
         script: |
           npx cap sync ios
+      - name: Generate app icons
+        script: |
+          npx @capacitor/assets generate --iconBackgroundColor '#ffffff' --iconBackgroundColorDark '#000000' --ios
       - name: Set up code signing
         script: |
           xcode-project use-profiles
