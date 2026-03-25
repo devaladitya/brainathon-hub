@@ -59,3 +59,49 @@ workflows:
         notify:
           success: true
           failure: true
+
+  cream-ios:
+    name: Build Cream iOS
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    environment:
+      node: 22
+      xcode: latest
+      ios_signing:
+        provisioning_profiles:
+          - Cream_AppStore
+        certificates:
+          - Cream Distribution
+      vars:
+        XCODE_SCHEME: "App"
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build web assets
+        script: |
+          npm run build
+      - name: Sync Capacitor iOS
+        script: |
+          npx cap sync ios
+      - name: Set up code signing
+        script: |
+          xcode-project use-profiles
+      - name: Build iOS app
+        script: |
+          cd cream/ios/App
+          xcode-project build-ipa \
+            --project App.xcodeproj \
+            --scheme "$XCODE_SCHEME"
+    artifacts:
+      - cream/ios/App/build/ios/ipa/*.ipa
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+    publishing:
+      email:
+        recipients:
+          - devalwork07@gmail.com
+        notify:
+          success: true
+          failure: true
